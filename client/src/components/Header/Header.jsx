@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import styles from "./header.module.scss";
 
 import { motion } from "framer-motion";
@@ -27,10 +27,13 @@ const nav__links = [
 
 const Header = () => {
   const headerRef = useRef(null);
+
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const currentUser = useSelector((state) => state.cart.currentUser);
+  const profileActionRef = useRef(null);
 
   const menuRef = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const stickyHeaderFunc = () => {
     window.addEventListener("scroll", () => {
@@ -54,9 +57,16 @@ const Header = () => {
   const menuToggle = () =>
     menuRef.current.classList.toggle(styles.active__menu);
 
-    const navigateToCart = () => {
-      navigate('/cart')
-    }
+  const navigateToCart = () => {
+    navigate("/cart");
+  };
+
+  const toggleProfileActions = () => {
+    console.log(profileActionRef.current.classList);
+    const isProfileActionsVisible = profileActionRef.current.classList.toggle(styles.show__profileActions);
+    return isProfileActionsVisible
+  };
+
   return (
     <header className={styles.header} ref={headerRef}>
       <Container>
@@ -65,7 +75,7 @@ const Header = () => {
             <div className={styles.logo}>
               <img src={logo} alt="logo" />
               <div>
-                <h1>Multimart</h1>
+                <h1>Quixfye</h1>
               </div>
             </div>
             <div
@@ -99,9 +109,29 @@ const Header = () => {
                 <span className={styles.badge}>{totalQuantity}</span>
               </span>
 
-              <span>
-                <motion.img whileTap={{ scale: 1.2 }} src={userIcon} alt="" />
-              </span>
+              <div className={`${styles.profile}`}>
+                <motion.img
+                  whileTap={{ scale: 1.2 }}
+                  src={userIcon}
+                  alt=""
+                  onClick={toggleProfileActions}
+                />
+                <div
+                  className={`${styles.profile__actions}`}
+                  ref={profileActionRef}
+                  onClick={toggleProfileActions}
+                >
+                  {1 ? (
+                    <span>Logout</span>
+                  ) : (
+                    <div>
+                      <Link to="/signup">Signup</Link>
+                      <Link to="/login">Login</Link>
+                    </div>
+                  )}
+                </div>
+                {/* <p>{currentUser.userName}</p> */}
+              </div>
               <div className={styles.mobile__menu}>
                 <span onClick={menuToggle}>
                   <i class="ri-menu-line"></i>

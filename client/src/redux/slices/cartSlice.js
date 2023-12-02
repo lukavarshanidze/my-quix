@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-
+    currentUser: '',
     cartItems: [],
     totalAmount: 0,
     totalQuantity: 0,
@@ -53,6 +53,11 @@ const cartSlice = createSlice({
                 );
 
             }
+        },
+        setCurrentUser: (state, action) => {
+            const userToken = action.payload.token;
+            const userName = action.payload.userName;
+            state.currentUser = {userToken, userName}
         }
     }
 });
