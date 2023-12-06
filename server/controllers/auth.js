@@ -100,3 +100,7 @@ exports.login = (req, res, next) => {
             next(err)
         })
 }
+
+exports.signout = (req, res, next) => {
+    res.json({ success: true, message: 'Logout successful' });
+}

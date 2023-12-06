@@ -8,7 +8,10 @@ import { motion } from "framer-motion";
 import logo from "../../assets/images/eco-logo.png";
 import userIcon from "../../assets/images/user-icon.png";
 import { Container, Row } from "reactstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { cartActions } from "../../redux/slices/cartSlice";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const nav__links = [
   {
@@ -33,6 +36,7 @@ const Header = () => {
   const profileActionRef = useRef(null);
 
   const menuRef = useRef(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const stickyHeaderFunc = () => {
@@ -63,10 +67,33 @@ const Header = () => {
 
   const toggleProfileActions = () => {
     console.log(profileActionRef.current.classList);
-    const isProfileActionsVisible = profileActionRef.current.classList.toggle(styles.show__profileActions);
-    return isProfileActionsVisible
+    const isProfileActionsVisible = profileActionRef.current.classList.toggle(
+      styles.profile__actions
+    );
+    return isProfileActionsVisible;
   };
 
+  const LogoutHandler = async () => {
+    try {
+      const response = await axios.post("/auth/logout");
+      if (response.data.success) {
+        dispatch(
+          cartActions.setCurrentUser({
+            token: null,
+            userName: null,
+          })
+        );
+        toast.success("Logged out", {
+          autoClose: 1000
+        });
+        navigate('/login')
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+  console.log("cr", currentUser);
   return (
     <header className={styles.header} ref={headerRef}>
       <Container>
@@ -116,21 +143,23 @@ const Header = () => {
                   alt=""
                   onClick={toggleProfileActions}
                 />
+
+                {/* <p>{currentUser.userName}</p> */}
                 <div
-                  className={`${styles.profile__actions}`}
+                  className={`${styles.show__profileActions}`}
                   ref={profileActionRef}
                   onClick={toggleProfileActions}
                 >
-                  {1 ? (
-                    <span>Logout</span>
+                  {currentUser.userToken ? (
+                    <span onClick={LogoutHandler}>Logout</span>
                   ) : (
-                    <div>
+                    <div className={`d-flex align-items-center justify-content-center flex-column`}>
                       <Link to="/signup">Signup</Link>
                       <Link to="/login">Login</Link>
+                      <Link to="/dashboard">Dashboard</Link>
                     </div>
                   )}
                 </div>
-                {/* <p>{currentUser.userName}</p> */}
               </div>
               <div className={styles.mobile__menu}>
                 <span onClick={menuToggle}>

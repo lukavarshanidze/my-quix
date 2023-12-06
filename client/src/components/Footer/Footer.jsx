@@ -14,7 +14,7 @@ const Footer = () => {
             <div className={styles.logo}>
               <img src={logo} alt="logo" />
               <div className={`text-white`}>
-                <h1>Multimart</h1>
+                <h1>Quixfye</h1>
               </div>
             </div>
             <p className={`${styles.footer__text} mt-4`}>

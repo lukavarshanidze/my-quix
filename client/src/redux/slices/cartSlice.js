@@ -57,6 +57,7 @@ const cartSlice = createSlice({
         setCurrentUser: (state, action) => {
             const userToken = action.payload.token;
             const userName = action.payload.userName;
+            console.log('es shignit reduxshi', userToken);
             state.currentUser = {userToken, userName}
         }
     }
