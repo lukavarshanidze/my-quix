@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const bcrypt = require('bcryptjs')
 const { validationResult } = require("express-validator")
 const jwt = require('jsonwebtoken')
@@ -19,7 +21,6 @@ const secret = crypto.randomBytes(32).toString('hex')
 
 exports.signup = (req, res, next) => {
     const errors = validationResult(req)
-    console.log(errors);
     if (!errors.isEmpty()) {
         const error = new Error('Validation failed.')
         error.statusCode = 422;
@@ -29,7 +30,6 @@ exports.signup = (req, res, next) => {
     const email = req.body.email;
     const name = req.body.name;
     const password = req.body.password;
-    console.log('aq ariss signup', email, name, password);
     bcrypt.hash(password, 12)
         .then(hashedPass => {
             return User.create({
@@ -88,8 +88,8 @@ exports.login = (req, res, next) => {
                     email: loadedUser.email,
                     userId: loadedUser.id
                 },
-                secret,
-                { expiresIn: '1h' }
+                process.env.SECRET_KEY,
+                { expiresIn: '10m' }
             );
             res.status(200).json({ token: token, userId: loadedUser.id, username: loadedUser.name })
         })

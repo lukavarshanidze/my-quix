@@ -9,54 +9,58 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <Container>
-        <Row>
-          <Col lg="4" className={`mb-4`} md='6'>
-            <div className={styles.logo}>
-              <img src={logo} alt="logo" />
-              <div className={`text-white`}>
-                <h1>Quixfye</h1>
-              </div>
-            </div>
+        <Row className={styles.row}>
+          <Col lg="4" className={`mb-4 `} md="6">
+            <h1 className={` text-white d-flex justify-content-center`}>
+              Quixfye
+            </h1>
             <p className={`${styles.footer__text} mt-4`}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptates velit accusamus nostrum alias modi praesentium culpa
-              corrupti provident suscipit distinctio?
+              Discover a world of modern style at Quixfye. Find quality
+              furniture, gadgets, and more to elevate your lifestyle.
             </p>
           </Col>
 
-          <Col lg="3" md='3' className={`mb-4`}>
+          <Col lg="3" md="3" className={`mb-4`}>
             <div className={styles.footer__quick_links}>
-              <h4 className={styles.quick__links_title}>Top Categories</h4>
+              <h4
+                className={`${styles.quick__links_title} text-white d-flex justify-content-center`}
+              >
+                Top Categories
+              </h4>
               <ListGroup className={`mb-3`}>
                 <ListGroupItem className={`ps-0 border-0`}>
-                  <Link to="#">Mobile Phones</Link>
+                  <Link to="/shop-category/mobile">Mobile Phones</Link>
                 </ListGroupItem>
 
                 <ListGroupItem className={`ps-0 border-0`}>
-                  <Link to="#">Modern Sofa</Link>
+                  <Link to="/shop-category/sofa">Modern Sofa</Link>
                 </ListGroupItem>
 
                 <ListGroupItem className={`ps-0 border-0`}>
-                  <Link to="#">Arm Chair</Link>
+                  <Link to="/shop-category/chair">Arm Chair</Link>
                 </ListGroupItem>
 
                 <ListGroupItem className={`ps-0 border-0`}>
-                  <Link to="#">Smart Watches</Link>
+                  <Link to="/shop-category/watch">Smart Watches</Link>
                 </ListGroupItem>
               </ListGroup>
             </div>
           </Col>
 
-          <Col lg="2" md='3' className={`mb-4`}>
+          <Col lg="2" md="3" className={`mb-4`}>
             <div className={styles.footer__quick_links}>
-              <h4 className={styles.quick__links_title}>Useful Links</h4>
+              <h4
+                className={`${styles.quick__links_title} text-white d-flex justify-content-center`}
+              >
+                Useful Links
+              </h4>
               <ListGroup className={`mb-3`}>
                 <ListGroupItem className={`ps-0 border-0`}>
                   <Link to="/shop">Shop</Link>
                 </ListGroupItem>
 
                 <ListGroupItem className={`ps-0 border-0`}>
-                  <Link to="/login">Cart</Link>
+                  <Link to="/cart">Cart</Link>
                 </ListGroupItem>
 
                 <ListGroupItem className={`ps-0 border-0`}>
@@ -64,35 +68,41 @@ const Footer = () => {
                 </ListGroupItem>
 
                 <ListGroupItem className={`ps-0 border-0`}>
-                  <Link to="#">Privacy Policy</Link>
+                  <Link to="/privacy">Privacy Policy</Link>
                 </ListGroupItem>
               </ListGroup>
             </div>
           </Col>
 
-          <Col lg="3" md='4'>
+          <Col lg="3" md="4">
             <div className={styles.footer__quick_links}>
               <h4 className={styles.quick__links_title}>Contact</h4>
               <ListGroup className={`mb-3`}>
-                <ListGroupItem className={`ps-0 border-0 d-flex align-items-center gap-2`}>
+                <ListGroupItem
+                  className={`ps-0 border-0 d-flex align-items-center gap-2`}
+                >
                   <span>
-                    <i class="ri-map-pin-line"></i>
+                    <i className="ri-map-pin-line"></i>
                   </span>
-                  <p>123 ZindaBazar, Sylhet, Bangladesh</p>
+                  <p>Tbilisi, Georgia</p>
                 </ListGroupItem>
 
-                <ListGroupItem className={`ps-0 border-0 d-flex align-items-center gap-2`}>
+                <ListGroupItem
+                  className={`ps-0 border-0 d-flex align-items-center gap-2`}
+                >
                   <span>
-                    <i class="ri-phone-line"></i>
+                    <i className="ri-phone-line"></i>
                   </span>
-                  <p>+08812312535235910</p>
+                  <p>+995555392221</p>
                 </ListGroupItem>
 
-                <ListGroupItem className={`ps-0 border-0 d-flex align-items-center gap-2`}>
+                <ListGroupItem
+                  className={`ps-0 border-0 d-flex align-items-center gap-2`}
+                >
                   <span>
-                    <i class="ri-mail-line"></i>
+                    <i className="ri-mail-line"></i>
                   </span>
-                  <p>example123@gmail.com</p>
+                  <p>varshanidze.luka@gmail.com</p>
                 </ListGroupItem>
               </ListGroup>
             </div>

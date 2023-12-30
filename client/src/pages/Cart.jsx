@@ -12,6 +12,18 @@ const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const dispatch = useDispatch();
+
+  const addToCart = (e) => {
+    dispatch(
+      cartActions.addItem({
+        // id: item.id,
+        // productName: item.productName,
+        // price: item.price,
+        // imgUrl: item.imgUrl,
+      })
+    );
+  };
+
   return (
     <Helmet title="Cart">
       <CommonSection title="Shopping cart" />
@@ -52,15 +64,21 @@ const Cart = () => {
                   Subtotal
                   <span className={`fs-4 fw-bold`}>${totalAmount}</span>
                 </h6>
-                <p className={`fs-6 mt-2`}>taxees and shipping will calculate in checkout</p>
+                <p className={`fs-6 mt-2`}>
+                  taxees and shipping will calculate in checkout
+                </p>
                 <div>
-                  <button className={`${styles.buy__btn} w-100 `}>
-                    <Link to={"/checkout"}>Checkout</Link>
-                  </button>
+                  <Link to={"/checkout"}>
+                    <button className={`${styles.buy__btn} w-100 `}>
+                      Checkout
+                    </button>
+                  </Link>
 
-                  <button className={`${styles.buy__btn} w-100 mt-3`}>
-                    <Link to={"/shop"}>Continue Shopping</Link>
-                  </button>
+                  <Link to={"/shop"}>
+                    <button className={`${styles.buy__btn} w-100 mt-3`}>
+                      Continue Shopping
+                    </button>
+                  </Link>
                 </div>
               </div>
             </Col>
@@ -77,19 +95,45 @@ const Tr = ({ item }) => {
     dispatch(cartActions.deleteItem(item.id));
   };
 
+  const addToCart = (e) => {
+    dispatch(
+      cartActions.addItem({
+        id: item.id,
+        productName: item.productName,
+        price: item.price,
+        imgUrl: item.imgUrl,
+      })
+    );
+  };
+
+  const minusToCart = (e) => {
+    dispatch(
+      cartActions.minusItem({
+        id: item.id,
+        productName: item.productName,
+        price: item.price,
+        imgUrl: item.imgUrl,
+      })
+    );
+  };
+
   return (
-    <tr>
+    <tr className={styles.tr__container}>
       <td>
         <img src={item.imgUrl} alt="" />
       </td>
       <td>{item.productName}</td>
       <td>${item.price}</td>
-      <td>{item.quantity}</td>
+      <td className={styles.buttons__td}>
+        <button onClick={minusToCart}>-</button>
+        <span className={styles.quantity}>{item.quantity}</span>
+        <button onClick={addToCart}>+</button>
+      </td>
       <td>
         <motion.i
           whileTap={{ scale: 1.2 }}
           onClick={deleteProduct}
-          class="ri-delete-bin-line"
+          className="ri-delete-bin-line"
         ></motion.i>
       </td>
     </tr>

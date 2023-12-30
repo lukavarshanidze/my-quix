@@ -8,13 +8,13 @@ import { useLocation } from "react-router-dom";
 const Layout = () => {
   const location = useLocation();
   return (
-    <>
+    <div>
       {location.pathname.startsWith("/dashboard") ? <AdminNav /> : <Header />}
       <div>
         <Routers />
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

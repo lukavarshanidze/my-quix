@@ -4,6 +4,10 @@
   background: var(--primary-color);
 }
 
+.row {
+  display: flex;
+}
+
 .footer__text {
   line-height: 30px;
   color: rgba(255, 255, 255, 0.735);
@@ -50,6 +54,10 @@
 }
 
 .logo img {
-  width: 1.5rem;
-  height: 35px;
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  color: white;
+  fill: white;
+  transform: rotate(-12deg);
 }

@@ -31,8 +31,9 @@ const nav__links = [
 const Header = () => {
   const headerRef = useRef(null);
 
+  const currentUser = localStorage.getItem("currentUser");
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
-  const currentUser = useSelector((state) => state.cart.currentUser);
+  // const currentUser = useSelector((state) => state.cart.currentUser);
   const profileActionRef = useRef(null);
 
   const menuRef = useRef(null);
@@ -66,7 +67,6 @@ const Header = () => {
   };
 
   const toggleProfileActions = () => {
-    console.log(profileActionRef.current.classList);
     const isProfileActionsVisible = profileActionRef.current.classList.toggle(
       styles.profile__actions
     );
@@ -75,7 +75,11 @@ const Header = () => {
 
   const LogoutHandler = async () => {
     try {
-      const response = await axios.post("/auth/logout");
+      const response = await axios.post("/auth/logout", {
+        headers: {
+          Authorization: currentUser,
+        },
+      });
       if (response.data.success) {
         dispatch(
           cartActions.setCurrentUser({
@@ -83,28 +87,32 @@ const Header = () => {
             userName: null,
           })
         );
+        localStorage.removeItem("currentUser");
         toast.success("Logged out", {
-          autoClose: 1000
+          autoClose: 1000,
         });
-        navigate('/login')
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.message);
     }
   };
-  console.log("cr", currentUser);
+  // console.log("cr", currentUser);
+  // console.log("crrrrrrr", localStorage.getItem("currentUser"));
   return (
     <header className={styles.header} ref={headerRef}>
       <Container>
         <Row>
           <div className={styles.nav__wrapper}>
-            <div className={styles.logo}>
-              <img src={logo} alt="logo" />
-              <div>
-                <h1>Quixfye</h1>
+            <Link to="/home">
+              <div className={styles.logo}>
+                <img src={logo} alt="logo" />
+                <div>
+                  <h1>Quixfye</h1>
+                </div>
               </div>
-            </div>
+            </Link>
             <div
               className={styles.navigation}
               ref={menuRef}
@@ -128,11 +136,11 @@ const Header = () => {
 
             <div className={styles.nav__icons}>
               <span className={styles.fav__icon}>
-                <i class="ri-heart-line"></i>
+                <i className="ri-heart-line"></i>
                 <span className={styles.badge}>1</span>
               </span>
               <span className={styles.cart__icon} onClick={navigateToCart}>
-                <i class="ri-shopping-bag-line"></i>
+                <i className="ri-shopping-bag-line"></i>
                 <span className={styles.badge}>{totalQuantity}</span>
               </span>
 
@@ -150,20 +158,22 @@ const Header = () => {
                   ref={profileActionRef}
                   onClick={toggleProfileActions}
                 >
-                  {currentUser.userToken ? (
+                  {currentUser ? (
                     <span onClick={LogoutHandler}>Logout</span>
                   ) : (
-                    <div className={`d-flex align-items-center justify-content-center flex-column`}>
+                    <div
+                      className={`d-flex align-items-center justify-content-center flex-column`}
+                    >
                       <Link to="/signup">Signup</Link>
                       <Link to="/login">Login</Link>
-                      <Link to="/dashboard">Dashboard</Link>
+                      {/* <Link to="/dashboard">Dashboard</Link> */}
                     </div>
                   )}
                 </div>
               </div>
               <div className={styles.mobile__menu}>
                 <span onClick={menuToggle}>
-                  <i class="ri-menu-line"></i>
+                  <i className="ri-menu-line"></i>
                 </span>
               </div>
             </div>

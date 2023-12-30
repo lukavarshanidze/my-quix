@@ -23,6 +23,7 @@ const Home = () => {
   const [popularProducts, setPopularProducts] = useState([]);
 
   const year = new Date().getFullYear();
+  const data = localStorage.getItem("cart");
 
   useEffect(() => {
     const filteredTrendingProducts = products.filter(
@@ -63,16 +64,18 @@ const Home = () => {
                 </p>
                 <h2>Make Your Interior More Minimalistic & Modern</h2>
                 <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Maxime, ex. Quibusdam sint labore doloremque commodi
-                  doloribus. Provident, illo. Illum, dicta.
+                  Explore our curated collection, featuring chic furniture and
+                  decor. Transform your space effortlessly with modern
+                  essentials for a sophisticated and stylish home.
                 </p>
-                <motion.button
-                  whileTap={{ scale: 1.2 }}
-                  className={styles.buy__btn}
-                >
-                  <Link to={"shop"}>SHOP NOW</Link>
-                </motion.button>
+                <Link to={"/shop"}>
+                  <motion.button
+                    whileTap={{ scale: 1.2 }}
+                    className={styles.buy__btn}
+                  >
+                    SHOP NOW
+                  </motion.button>
+                </Link>
               </div>
             </Col>
 

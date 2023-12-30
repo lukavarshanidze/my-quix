@@ -3,6 +3,11 @@
   height: 80px !important;
   object-fit: cover;
 }
+table tr td img {
+  width: 80px !important;
+  height: 80px !important;
+  object-fit: cover;
+}
 
 td i {
   cursor: pointer;
@@ -27,4 +32,22 @@ th {
 
 .buy__btn a:hover {
   color: #fff;
+}
+
+.buttons__td {
+}
+
+.buttons__td button{
+  font-weight: 700;
+  width: 23px;
+  height: 25px;
+  border: 1px solid rgb(165, 165, 165);
+  background-color: transparent;
+  border-radius: 4px;
+  outline: none;
+}
+
+.buttons__td span {
+  font-size: 18px;
+  margin: 0 5px;
 }

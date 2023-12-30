@@ -25,9 +25,15 @@ const Login = () => {
         email,
         password,
       });
+      if (response.status === 401) {
+        throw new Error("Validation failed.");
+      }
+      if (response.status !== 200) {
+        throw new Error("Could not authenticate you!");
+      }
       const data = response.data;
+      // console.log('data',data);
       setLoading(false);
-      console.log("es aris data", data.token);
       toast.success("Successfully logged in");
       dispatch(
         cartActions.setCurrentUser({
@@ -38,8 +44,9 @@ const Login = () => {
       navigate("/checkout");
     } catch (error) {
       setLoading(false);
+      console.log('errr',error);
       toast.error(error.response.data.message, {
-        autoClose: 4000,
+        autoClose: 3300,
       });
     }
   };

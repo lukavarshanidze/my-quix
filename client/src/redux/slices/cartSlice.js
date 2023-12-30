@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const storedCartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
 const initialState = {
     currentUser: '',
-    cartItems: [],
-    totalAmount: 0,
-    totalQuantity: 0,
+    cartItems: storedCartItems.cartItems || [],
+    totalAmount: storedCartItems.totalAmount || 0,
+    totalQuantity: storedCartItems.totalQuantity || 0,
 };
 
 const cartSlice = createSlice({
@@ -13,8 +15,7 @@ const cartSlice = createSlice({
     reducers: {
         addItem: (state, action) => {
             const newItem = action.payload;
-            console.log(newItem);
-            const existingItem = state.cartItems.find(item => item.existingItem = state.cartItems.find(item => item.id === newItem.id))
+            const existingItem = state.cartItems.find(item => item.id === newItem.id)
 
             state.totalQuantity++
             if (!existingItem) {
@@ -36,11 +37,31 @@ const cartSlice = createSlice({
                 (total, item) => total + Number(item.price) * Number(item.quantity),
                 0
             );
+
+            localStorage.setItem('cart', JSON.stringify(state));
+
         },
+
+        minusItem: (state, action) => {
+            const newItem = action.payload;
+            const existingItem = state.cartItems.find(item => item.id === newItem.id);
+
+            if (existingItem && existingItem.quantity > 1) {
+                state.totalQuantity--
+                existingItem.quantity--
+                existingItem.totalPrice = Number(existingItem.totalPrice) - Number(newItem.price)
+            }
+
+            state.totalAmount = state.cartItems.reduce(
+                (total, item) => total + Number(item.price) * Number(item.quantity),
+                0
+            );
+
+            localStorage.setItem('cart', JSON.stringify(state));
+        },
+
         deleteItem: (state, action) => {
-            console.log('aqaa');
             const id = action.payload
-            console.log(id, state.cartItems[0].id);
             const existingItem = state.cartItems.find(item => item.id === id)
 
             if (existingItem) {
@@ -53,12 +74,14 @@ const cartSlice = createSlice({
                 );
 
             }
+            localStorage.setItem('cart', JSON.stringify(state));
         },
+
         setCurrentUser: (state, action) => {
             const userToken = action.payload.token;
             const userName = action.payload.userName;
-            console.log('es shignit reduxshi', userToken);
-            state.currentUser = {userToken, userName}
+            state.currentUser = { userToken, userName }
+            localStorage.setItem('currentUser', userToken)
         }
     }
 });

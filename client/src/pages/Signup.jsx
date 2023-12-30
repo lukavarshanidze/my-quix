@@ -10,7 +10,6 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ const Signup = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post("auth/signup", {
+      const response = await axios.put("auth/signup", {
         email,
         password,
         name: username,
@@ -78,14 +77,6 @@ const Signup = () => {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </FormGroup>
-
-                  <FormGroup className={`${styles.form__group}`}>
-                    <input
-                      type="file"
-                      onChange={(e) => setFile(e.target.files[0])}
-                    />
-                  </FormGroup>
-
                   <button
                     type="submit"
                     className={`${styles.buy__btn} ${styles.auth__btn}`}
