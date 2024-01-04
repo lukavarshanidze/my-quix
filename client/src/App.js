@@ -1,9 +1,13 @@
 import "./App.css";
 
 import Layout from './components/Layout/Layout'
+import { PaymentProvider } from "./PaymentContext";
+
 
 function App() {
-  return <Layout></Layout>
+  return <PaymentProvider>
+    <Layout></Layout>
+  </PaymentProvider>
 }
 
 export default App;

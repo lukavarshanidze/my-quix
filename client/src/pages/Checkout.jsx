@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Container, Row, Col, Form, FormGroup } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSelection from "../components/UI/CommonSelection";
+import { Link } from "react-router-dom";
 
 const Checkout = () => {
   const totalQty = useSelector((state) => state.cart.totalQuantity);
@@ -68,11 +69,13 @@ const Checkout = () => {
                 <h4>
                   Total Cost: <span>${totalAmount}</span>
                 </h4>
-                <button
-                  className={`${styles.buy__btn} ${styles.auth__btn} w-100`}
-                >
-                  Place an order
-                </button>
+                <Link to="/api/payment">
+                  <button
+                    className={`${styles.buy__btn} ${styles.auth__btn} w-100`}
+                  >
+                    Place an order
+                  </button>
+                </Link>
               </div>
             </Col>
           </Row>

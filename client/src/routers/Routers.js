@@ -7,6 +7,7 @@ import ProductDetails from '../pages/ProductDetails'
 import Checkout from '../pages/Checkout'
 import Login from '../pages/Login'
 import Signup from '../pages/Signup'
+import PaymentForm from '../pages/PaymentForm'
 
 import AddProducts from '../admin/AddProducts'
 import AllProducts from '../admin/AllProducts'
@@ -32,6 +33,7 @@ return <Routes>
   <Route path='/shop-category/:product' element={<Shop />} />
   <Route path='/cart' element={<Cart />} />
   <Route path='/checkout' element={<Checkout />} />
+  <Route path='/api/payment' element={<PaymentForm />} />
   <Route path='/privacy' element={<PrivacyPolicy />} />
 
   {/* <Route path="/*" element={<ProtectedRoute />}> */}

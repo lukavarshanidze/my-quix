@@ -1,19 +1,57 @@
-require('dotenv').config()
-const jwt = require('jsonwebtoken');
+var gateway = new braintree.BraintreeGateway({
+    environment: braintree.Environment.Sandbox,
+    merchantId: process.env.BRAINTREE_MERCHANT_ID,
+    publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+    privateKey: process.env.BRAINTREE_PRIVATE_KEY
+});
 
-const client_id = process.env.CLIENT_ID;
-
-const token = jwt.sign({ client_id }, 'secret-code', { expiresIn: '1h' })
-
-function verifyToken(req, res, next) {
-    const token = req.headers.authorization;
-
-    jwt.verify(token, 'secret', (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: 'Token is invalid ' });
-        }
-
-        req.client_id = decoded.client_id;
-        next()
-    })
+const braintreeTokenController = async (req, res) => {
+    try {
+        gateway.clientToken.generate({}, function (err, response) {
+            if (err) {
+                res.status(500).json({ err });
+            } else {
+                res.json({ response });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }
+
+
+const brainTreePaymentController = async (req, res) => {
+    try {
+        const { nonce, cart } = req.body;
+        let total = 0;
+        cart.map((i) => {
+            total += i.price;
+        });
+        let newTransaction = gateway.transaction.sale(
+            {
+                amount: total,
+                paymentMethodNonce: nonce,
+                options: {
+                    submitForSettlement: true,
+                },
+            },
+            function (error, result) {
+                if (result) {
+                    const order = new orderModel({
+                        products: cart,
+                        payment: result,
+                        buyer: req.user._id,
+                    }).save();
+                    res.json({ ok: true });
+                } else {
+                    res.status(500).send(error);
+                }
+            }
+        );
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+module.exports = { braintreeTokenController, brainTreePaymentController }
