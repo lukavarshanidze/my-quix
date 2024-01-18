@@ -13,6 +13,7 @@
   color: rgba(255, 255, 255, 0.735);
 }
 
+
 .footer__quick_links ul li {
   background: transparent !important;
 }
@@ -60,4 +61,14 @@
   color: white;
   fill: white;
   transform: rotate(-12deg);
+}
+
+
+@media only screen and (max-width: 992px) {
+  .footer__quick_links {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
 }

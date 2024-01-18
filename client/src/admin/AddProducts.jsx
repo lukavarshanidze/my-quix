@@ -34,6 +34,7 @@ const AddProducts = () => {
     formData.append("category", enterCategory);
     formData.append("image", enterProductImg);
     formData.append("price", enterPrice);
+    console.log(formData);
 
     try {
       const response = await axios.post("api/admin/add-product", formData, {

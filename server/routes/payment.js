@@ -3,7 +3,9 @@ const express = require('express')
 // const paymentController = require('../controllers/payment')
 const braintree = require('braintree')
 // const { braintreeTokenController, brainTreePaymentController } = require('../controllers/carController')
+const { UUID, UUIDV4 } = require('sequelize')
 const router = express.Router()
+
 
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8888 } = process.env;
 const base = "https://api-m.paypal.com";
@@ -20,7 +22,8 @@ const generateAccessToken = async () => {
             method: "POST",
             body: "grant_type=client_credentials",
             headers: {
-                Authorization: `Basic ${auth}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${auth}`,
             },
         });
 
@@ -33,7 +36,6 @@ const generateAccessToken = async () => {
 
 /**
 * Create an order to start the transaction.
-* @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
 */
 const createOrder = async (cart) => {
     // use the cart information passed from the front-end to calculate the purchase unit details
@@ -42,59 +44,136 @@ const createOrder = async (cart) => {
         cart,
     );
 
-    const accessToken = await generateAccessToken();
     const url = `${base}/v2/checkout/orders`;
-    const payload = {
-        intent: "CAPTURE",
-        purchase_units: [
-            {
-                amount: {
-                    currency_code: "USD",
-                    value: "1.00",
+    generateAccessToken()
+        .then(accessToken => {
+            const order_data_json = {
+                'intent': req.body.intent.toUpperCase(),
+                'purchase_units': [
+                    {
+                        'amount': {
+                            'currency_code': "USD",
+                            'value': "1.00",
+                        },
+                    },
+                ],
+            };
+            const data = JSON.stringify(order_data_json)
+
+            fetch(url, {
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${accessToken}`,
+                    'PayPal-Request-Id': generate_randomm_uuid(),
                 },
-            },
-        ],
-    };
-
-    const response = await fetch(url, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-            // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
-            // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-            // "PayPal-Mock-Response": '{"mock_application_codes": "MISSING_REQUIRED_PARAMETER"}'
-            // "PayPal-Mock-Response": '{"mock_application_codes": "PERMISSION_DENIED"}'
-            // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
-        },
-        method: "POST",
-        body: JSON.stringify(payload),
-    });
-
-    return handleResponse(response);
+                method: "POST",
+                body: data,
+            })
+                .then(res => res.json())
+                .then(json => res.json({ json }))
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ err })
+        })
 };
 
 /**
 * Capture payment for the created order to complete the transaction.
 */
-const captureOrder = async (orderID) => {
-    const accessToken = await generateAccessToken();
-    const url = `${base}/v2/checkout/orders/${orderID}/capture`;
+router.post('/complete_order', (req, res) => {
+    const orderID = req.body.order_id
+    const intent = req.body.intent
+    const url = `${base}/v2/checkout/orders/${orderID}/${intent}`;
 
-    const response = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-            // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
-            // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-            // "PayPal-Mock-Response": '{"mock_application_codes": "INSTRUMENT_DECLINED"}'
-            // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
-            // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
-        },
-    });
+    generateAccessToken()
+        .then(accessToken => {
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            })
+                .then(res => res.json())
+                .then(json => {
+                    console.log(json);
+                    res.json({ json })
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json({ err })
+                })
+        })
 
-    return handleResponse(response);
-};
+})
+
+function generate_random_uuid() {
+    const newIdentifier = new UUIDV4()
+    return newIdentifier
+}
+
+router.post('/create_order', (req, res) => {
+    const url = `${base}/v2/checkout/orders`;
+    generateAccessToken()
+        .then(accessToken => {
+            const order_data_json = {
+                'intent': req.body.intent.toUpperCase(),
+                'purchase_units': [
+                    {
+                        'amount': {
+                            'currency_code': "USD",
+                            'value': "1.00",
+                        },
+                    },
+                ],
+            };
+            const data = JSON.stringify(order_data_json)
+
+            fetch(url, {
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${accessToken}`,
+                    'PayPal-Request-Id': generate_random_uuid(),
+                },
+                method: "POST",
+                body: data,
+            })
+                .then(res => res.json())
+                .then(json => res.json({ json }))
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ err })
+        })
+})
+// const captureOrder = async (orderID) => {
+//     const accessToken = await generateAccessToken();
+//     const url = `${base}/v2/checkout/orders/${orderID}/capture`;
+
+//     fetch(url, {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//             'Authorization': `Bearer ${accessToken}`,
+//             // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
+//             // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
+//             // "PayPal-Mock-Response": '{"mock_application_codes": "INSTRUMENT_DECLINED"}'
+//             // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
+//             // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
+//         },
+//     })
+//         .then(res => res.json())
+//         .then(json => {
+//             console.log(json);
+//             res.json({ json })
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             res.json({ err })
+//         })
+// };
+
 
 async function handleResponse(response) {
     try {
@@ -109,17 +188,17 @@ async function handleResponse(response) {
     }
 }
 
-router.post("/api/orders", async (req, res) => {
-    try {
-        // use the cart information passed from the front-end to calculate the order amount detals
-        const { cart } = req.body;
-        const { jsonResponse, httpStatusCode } = await createOrder(cart);
-        res.status(httpStatusCode).json(jsonResponse);
-    } catch (error) {
-        console.error("Failed to create order:", error);
-        res.status(500).json({ error: "Failed to create order." });
-    }
-});
+// router.post("/api/orders", async (req, res) => {
+//     try {
+//         // use the cart information passed from the front-end to calculate the order amount detals
+//         const { cart } = req.body;
+//         const { jsonResponse, httpStatusCode } = await createOrder(cart);
+//         res.status(httpStatusCode).json(jsonResponse);
+//     } catch (error) {
+//         console.error("Failed to create order:", error);
+//         res.status(500).json({ error: "Failed to create order." });
+//     }
+// });
 
 router.post("/api/orders/:orderID/capture", async (req, res) => {
     try {

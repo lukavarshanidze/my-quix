@@ -102,7 +102,7 @@ const Footer = () => {
                   <span>
                     <i className="ri-mail-line"></i>
                   </span>
-                  <p>varshanidze.luka@gmail.com</p>
+                  <p>contact@quixfye.com</p>
                 </ListGroupItem>
               </ListGroup>
             </div>

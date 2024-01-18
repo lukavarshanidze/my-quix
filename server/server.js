@@ -54,7 +54,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // app.use(cartRoutes)
 app.use(paymentRoutes)
-// app.use('/auth', authRoutes)
+app.use('/auth', authRoutes)
 // app.use('/dashboard/api/admin', adminRoutes)
 
 app.get('*', (req, res) => {
