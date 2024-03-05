@@ -8,8 +8,15 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "../../redux/slices/cartSlice";
 import { useState } from "react";
 
+import firstImage from "../../assets/cleanerImages/air.webp";
+import secondImage from "../../assets/cleanerImages/second.webp";
+import thirdImage from "../../assets/cleanerImages/third.webp";
+import fourthImage from "../../assets/cleanerImages/fourth.webp";
+
 const ProductCard = ({ item }) => {
   const [addingToCart, setAddingToCart] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
   const dispatch = useDispatch();
 
   const addToCart = (e) => {
@@ -33,13 +40,68 @@ const ProductCard = ({ item }) => {
     toast.success("Product added successfully");
   };
 
+  const images = [
+    item.imgUrl,
+    firstImage,
+    secondImage,
+    thirdImage,
+    fourthImage,
+  ];
+  const numImages = images.length;
+  const numImagesPerPage = 1;
+
+  const nextSlide = () => {
+    setTransitioning(true); // Start transition
+    setTimeout(() => {
+      const newIndex = (currentIndex + numImagesPerPage) % numImages;
+      setCurrentIndex(newIndex);
+    }, 0); // Change image after 1 second (adjust as needed)
+  };
+
+  const prevSlide = () => {
+    setTransitioning(true); // Start transition
+    setTimeout(() => {
+      const newIndex =
+        (currentIndex - numImagesPerPage + numImages) % numImages;
+      setCurrentIndex(newIndex);
+    }, 0); // Change image after 1 second (adjust as needed)
+  };
+
   return (
-    <Col lg="3" md="4" className="mb-2">
+    <Col lg="4" md="5" className="mb-2">
       <div className={styles.product__item}>
         <div className={styles.product__img}>
-          <Link to={`/shop/${item.id}`}>
-            <motion.img whileHover={{ scale: 0.9 }} src={item.imgUrl} alt="" />
-          </Link>
+          <div className={styles.image_container}>
+            <button
+              className={`${styles.prev} ${
+                currentIndex === 0 ? styles.prevButton_zero : ""
+              }`}
+              onClick={prevSlide}
+            >
+              &#10094;
+            </button>
+            <Link to={`/shop/${item.id}`}>
+              {images
+                .slice(currentIndex, currentIndex + numImagesPerPage)
+                .map((image, index) => (
+                  <motion.img
+                    key={index}
+                    whileHover={{ scale: 0.9 }}
+                    src={image}
+                    alt=""
+                  />
+                ))}
+            </Link>
+
+            <button
+              className={`${styles.next} ${
+                currentIndex === numImages - 1 ? styles.nextButton_last : ""
+              }`}
+              onClick={nextSlide}
+            >
+              &#10095;
+            </button>
+          </div>
         </div>
         <div className={`${styles.product__info} p-2`}>
           <h3 className={styles.product__name}>

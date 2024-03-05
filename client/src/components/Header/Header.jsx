@@ -139,13 +139,12 @@ const Header = () => {
             </div>
 
             <div className={styles.nav__icons}>
-              <span className={styles.fav__icon}>
-                <i className="ri-heart-line"></i>
-                <span className={styles.badge}>1</span>
-              </span>
               <span className={styles.cart__icon} onClick={navigateToCart}>
+                <i style={{ fontSize: "16px" }}>Cart</i>
                 <i className="ri-shopping-bag-line"></i>
-                <span className={styles.badge}>{totalQuantity}</span>
+                <span style={{ fontSize: "16px" }} className={styles.badge}>
+                  {totalQuantity}
+                </span>
               </span>
 
               <div className={`${styles.profile}`}>

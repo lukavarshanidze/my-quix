@@ -120,6 +120,7 @@ const AddProducts = () => {
                         required
                       >
                         <option value="chair">Chair</option>
+                        <option value="vacuum cleaner">Cleaner</option>
                         <option value="sofa">Sofa</option>
                         <option value="mobile">Mobile</option>
                         <option value="watch">Watch</option>

@@ -12,6 +12,11 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 
+import firstImage from "../assets/cleanerImages/air.webp";
+import secondImage from "../assets/cleanerImages/second.webp";
+import thirdImage from "../assets/cleanerImages/third.webp";
+import fourthImage from "../assets/cleanerImages/fourth.webp";
+
 const ProductDetails = () => {
   const [tab, setTab] = useState("desc");
   const reviewUser = useRef("");
@@ -19,6 +24,9 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
 
   const [rating, setRating] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [transitioning, setTransitioning] = useState(false); // State to track transition
+
   const { id } = useParams();
   const params = useParams();
   const product = products.find((item) => item.id === id);
@@ -48,7 +56,7 @@ const ProductDetails = () => {
       rating,
     };
 
-    toast.success('Review submitted')
+    toast.success("Review submitted");
   };
 
   const addToCart = () => {
@@ -68,20 +76,72 @@ const ProductDetails = () => {
     window.scrollTo(0, 0);
   }, [product]);
 
+  const images = [
+    product.imgUrl,
+    firstImage,
+    secondImage,
+    thirdImage,
+    fourthImage,
+  ];
+  const numImages = images.length;
+  const numImagesPerPage = 1;
+
+  const nextSlide = () => {
+    setTransitioning(true); // Start transition
+    setTimeout(() => {
+      const newIndex = (currentIndex + numImagesPerPage) % numImages;
+      setCurrentIndex(newIndex);
+    }, 0); // Change image after 1 second (adjust as needed)
+  };
+
+  const prevSlide = () => {
+    setTransitioning(true); // Start transition
+    setTimeout(() => {
+      const newIndex =
+        (currentIndex - numImagesPerPage + numImages) % numImages;
+      setCurrentIndex(newIndex);
+    }, 0); // Change image after 1 second (adjust as needed)
+  };
+
   return (
     <Helmet title={productName}>
       <CommonSection title={productName} />
 
       <section className={`pt-0`}>
-        <Container>
+        <Container lg="12" className={styles.container}>
           <Row>
-            <Col lg="6">
-              <img src={imgUrl} />
+            <Col className={styles.image_container} lg="6">
+              <button
+                className={`${styles.prev} ${
+                  currentIndex === 0 ? styles.prevButton_zero : ""
+                }`}
+                onClick={prevSlide}
+              >
+                &#10094;
+              </button>
+              {images
+                .slice(currentIndex, currentIndex + numImagesPerPage)
+                .map((image, index) => (
+                  <img
+                    key={index}
+                    whileHover={{ scale: 0.9 }}
+                    src={image}
+                    alt=""
+                  />
+                ))}
+              <button
+                className={`${styles.next} ${
+                  currentIndex === numImages - 1 ? styles.nextButton_last : ""
+                }`}
+                onClick={nextSlide}
+              >
+                &#10095;
+              </button>
             </Col>
 
-            <Col lg="6">
+            <Col className={styles.short_cont} lg="5">
               <div className={`${styles.product__details}`}>
-                <h2>productName</h2>
+                <h2>{product.productName}</h2>
                 <div
                   className={`${styles.product__rating} d-flex align-items-center gap-5 mb-3`}
                 >
@@ -222,7 +282,7 @@ const ProductDetails = () => {
                           />
                         </div>
                         <motion.button
-                          whileTap={{ scale: 1.2}}
+                          whileTap={{ scale: 1.2 }}
                           type="submit"
                           className={`${styles.buy__btn}`}
                         >

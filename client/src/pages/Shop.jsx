@@ -33,6 +33,14 @@ const Shop = () => {
       setProductsData(filteredProducts);
     }
 
+    if (filterName === "vacuum cleaner") {
+      const filteredProducts = products.filter(
+        (item) => item.category === "vacuum cleaner"
+      );
+
+      setProductsData(filteredProducts);
+    }
+
     if (filterName === "mobile") {
       const filteredProducts = products.filter(
         (item) => item.category === "mobile"
@@ -107,6 +115,7 @@ const Shop = () => {
               <div className={styles.filter__widget}>
                 <select onChange={handleFilter}>
                   <option value="all">Filter By Category ( All )</option>
+                  <option value="vacuum cleaner">Cleaner</option>
                   <option value="sofa">Sofa</option>
                   <option value="mobile">Mobile</option>
                   <option value="chair">Chair</option>

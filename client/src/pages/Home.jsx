@@ -29,6 +29,7 @@ const Home = () => {
     const filteredTrendingProducts = products.filter(
       (item) => item.category === "chair"
     );
+    
 
     const filteredBestSaslesProducts = products.filter(
       (item) => item.category === "sofa"
@@ -36,6 +37,10 @@ const Home = () => {
 
     const filteredMobileProducts = products.filter(
       (item) => item.category === "mobile"
+    );
+
+    const filteredCleanerProducts = products.filter(
+      (item) => item.category === "vacuum cleaner"
     );
 
     const filteredWirelessProducts = products.filter(
@@ -46,7 +51,7 @@ const Home = () => {
       (item) => item.category === "watch"
     );
 
-    setTrendingProducts(filteredTrendingProducts);
+    setTrendingProducts(filteredCleanerProducts);
     setBestSalesProducts(filteredBestSaslesProducts);
     setMobileProducts(filteredMobileProducts);
     setWirelessProducts(filteredWirelessProducts);
@@ -107,7 +112,7 @@ const Home = () => {
             <Col lg="12" className={styles.text_center}>
               <h2 className={styles.section__title}>Best Sales</h2>
             </Col>
-            <ProductsList data={bestSalesProducts} />
+            <ProductsList data={trendingProducts} />
           </Row>
         </Container>
       </section>
