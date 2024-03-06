@@ -28,7 +28,7 @@ const Footer = () => {
                 Top Categories
               </h4>
               <ListGroup className={`mb-3`}>
-                <ListGroupItem className={`ps-0 border-0`}>
+                {/* <ListGroupItem className={`ps-0 border-0`}>
                   <Link to="/shop-category/mobile">Mobile Phones</Link>
                 </ListGroupItem>
 
@@ -42,6 +42,9 @@ const Footer = () => {
 
                 <ListGroupItem className={`ps-0 border-0`}>
                   <Link to="/shop-category/watch">Smart Watches</Link>
+                </ListGroupItem> */}
+                <ListGroupItem className={`ps-0 border-0`}>
+                  <Link to="/shop-category/vacuum-cleaner">Car Vacuum Cleaner</Link>
                 </ListGroupItem>
               </ListGroup>
             </div>
@@ -69,6 +72,10 @@ const Footer = () => {
 
                 <ListGroupItem className={`ps-0 border-0`}>
                   <Link to="/privacy">Privacy Policy</Link>
+                </ListGroupItem>
+
+                <ListGroupItem className={`ps-0 border-0`}>
+                  <Link to="/terms">Terms & Conditions</Link>
                 </ListGroupItem>
               </ListGroup>
             </div>

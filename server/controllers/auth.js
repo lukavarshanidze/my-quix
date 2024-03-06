@@ -101,6 +101,29 @@ exports.login = (req, res, next) => {
         })
 }
 
+exports.postMessage = (req, res, next) => {
+    const name = req.body.name
+    const email = req.body.email
+    const message = req.body.message
+    var mailOptions = {
+        from: 'lvarshanidze2001@gmail.com',
+        to: [
+            'varshanidze.luka@gmail.com',
+        ],
+        subject: 'Message',
+        text: `nameFrom: ${name}, emailFrom: ${email}, messageFrom: ${message}`
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+    res.status(200).json({ name: name })
+}
+
 exports.signout = (req, res, next) => {
     res.json({ success: true, message: 'Logout successful' });
 }

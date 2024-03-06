@@ -55,7 +55,7 @@ const Checkout = () => {
                   Total Qty: <span>{totalQty} items</span>
                 </h6>
                 <h6>
-                  Subtotal: <span>${totalAmount}</span>
+                  Subtotal: <span>${parseFloat(totalAmount.toFixed(2))}</span>
                 </h6>
                 <h6>
                   <span>
@@ -67,7 +67,7 @@ const Checkout = () => {
 
                 <h6>Free shipping</h6>
                 <h4>
-                  Total Cost: <span>${totalAmount}</span>
+                  Total Cost: <span>${parseFloat(totalAmount.toFixed(2))}</span>
                 </h4>
                 <Link to="/api/payment">
                   <button

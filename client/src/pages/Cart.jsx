@@ -62,7 +62,7 @@ const Cart = () => {
                   className={`d-flex align-items-center justify-content-between `}
                 >
                   Subtotal
-                  <span className={`fs-4 fw-bold`}>${totalAmount}</span>
+                  <span className={`fs-4 fw-bold`}>${parseFloat(totalAmount.toFixed(2))}</span>
                 </h6>
                 <p className={`fs-6 mt-2`}>
                   taxees and shipping will calculate in checkout

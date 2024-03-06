@@ -38,6 +38,9 @@
   margin-bottom: 0;
 }
 
+.menu li {
+}
+
 .nav__item a {
   color: var(--primary-color);
   font-weight: 500;
@@ -133,6 +136,12 @@
   background: #fff;
 }
 
+@media only screen and (max-width: 992px) {
+.cart__icon {
+  margin-left: 15px;
+}
+}
+
 @media only screen and (max-width: 768px) {
   .navigation {
     position: fixed;
@@ -183,6 +192,7 @@
   .cart__icon {
     font-size: 1.2rem !important;
   }
+
   
   .nav__icons span img {
     width: 1.4rem;
@@ -195,3 +205,5 @@
     line-height: 60px;
   }
 }
+
+

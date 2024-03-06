@@ -17,6 +17,8 @@ import Users from '../admin/Users'
 import PrivacyPolicy from '../pages/Privacy'
 import { useEffect } from 'react'
 import About from '../pages/About'
+import TermsAndConditions from '../pages/Terms_Conditions'
+import ContactForm from '../pages/Contact'
 
 const Routers = () => {
   const { pathname } = useLocation();
@@ -35,6 +37,8 @@ return <Routes>
   <Route path='/about-us' element={<About />} />
   <Route path='/checkout' element={<Checkout />} />
   <Route path='/privacy' element={<PrivacyPolicy />} />
+  <Route path='/terms' element={<TermsAndConditions />} />
+  <Route path='/contact' element={<ContactForm />} />
 
   {/* <Route path="/*" element={<ProtectedRoute />}> */}
   <Route path="dashboard" element={<Dashboard />} />

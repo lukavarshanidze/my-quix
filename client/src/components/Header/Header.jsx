@@ -28,7 +28,11 @@ const nav__links = [
   },
   {
     path: "about-us",
-    display: "About us",
+    display: "About",
+  },
+  {
+    path: 'contact',
+    display: "Contact"
   },
 ];
 
@@ -142,7 +146,7 @@ const Header = () => {
               <span className={styles.cart__icon} onClick={navigateToCart}>
                 <i style={{ fontSize: "16px" }}>Cart</i>
                 <i className="ri-shopping-bag-line"></i>
-                <span style={{ fontSize: "16px" }} className={styles.badge}>
+                <span style={{ fontSize: "12px" }} className={styles.badge}>
                   {totalQuantity}
                 </span>
               </span>

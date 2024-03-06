@@ -1,0 +1,21 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  
+    h1, h2 {
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+  
+    p {
+      font-family: Arial, sans-serif;
+      color: #666;
+      line-height: 1.6;
+    }
+  
+    ul {
+      list-style: disc;
+      margin-left: 20px;
+    }
+  }
